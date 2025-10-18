@@ -1,0 +1,59 @@
+{
+  "compilerOptions": {
+    // 🔹 ECMAScript version for output (modern JS)
+    "target": "ESNext",
+
+    // 🔹 Ensures proper handling of class field declarations
+    "useDefineForClassFields": true,
+
+    // 🔹 Include DOM and modern JS APIs
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+
+    // 🔹 Allow mixing plain JS files (.js/.jsx) with TypeScript files (.ts/.tsx)
+    "allowJs": true,
+
+    // 🔹 Skip type checking of library files (faster builds)
+    "skipLibCheck": true,
+
+    // 🔹 Enables default imports from CommonJS modules
+    "esModuleInterop": true,
+
+    // 🔹 Allows `import React from "react"` and similar without issues
+    "allowSyntheticDefaultImports": true,
+
+    // 🔹 Disables strict mode (use true later when you're comfortable with TS)
+    "strict": false,
+
+    // 🔹 Enforces consistent case in file imports (helps with Windows/macOS differences)
+    "forceConsistentCasingInFileNames": true,
+
+    // 🔹 Module system for bundling (Vite expects ESNext)
+    "module": "ESNext",
+
+    // 🔹 How modules are resolved (Node-style resolution)
+    "moduleResolution": "Node",
+
+    // 🔹 Allow importing JSON files as modules
+    "resolveJsonModule": true,
+
+    // 🔹 Prevents files from interfering with each other
+    "isolatedModules": true,
+
+    // 🔹 Don’t emit compiled JS files (Vite handles that)
+    "noEmit": true,
+
+    // 🔹 Enables React 17+ JSX transform (no need to import React manually)
+    "jsx": "react-jsx",
+
+    // 🔹 Base path for module resolution
+    "baseUrl": ".",
+
+    // 🔹 Create shortcut imports (for example, "@/components/Button")
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+
+  // 🔹 Include all files inside `src/`
+  "include": ["src"]
+}

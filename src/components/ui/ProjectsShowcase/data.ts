@@ -1,0 +1,80 @@
+
+// components/ProjectsShowcase/data.ts
+import { Project, Category } from "./types";
+
+export const projects: Project[] = [
+  {
+    id: 1,
+    title: "E-Commerce Platform",
+    category: "web",
+    description: "Full-stack shopping experience with real-time inventory",
+    image: "🛍️",
+    tech: ["React", "Node.js", "MongoDB", "Stripe"],
+    color: "from-blue-500 to-cyan-600",
+    link: "#",
+    stats: { users: "10K+", rating: "4.8/5" },
+  },
+  {
+    id: 2,
+    title: "Fitness Tracking App",
+    category: "mobile",
+    description: "Track workouts, nutrition, and progress with AI insights",
+    image: "💪",
+    tech: ["React Native", "Firebase", "TensorFlow"],
+    color: "from-green-400 to-emerald-600",
+    link: "#",
+    stats: { downloads: "50K+", rating: "4.9/5" },
+  },
+  {
+    id: 3,
+    title: "Portfolio Website",
+    category: "design",
+    description: "Modern portfolio with 3D animations and interactions",
+    image: "🎨",
+    tech: ["Next.js", "Three.js", "Framer Motion"],
+    color: "from-purple-500 to-pink-600",
+    link: "#",
+    stats: { views: "100K+", bounce: "20%" },
+  },
+  {
+    id: 4,
+    title: "Task Management SaaS",
+    category: "web",
+    description: "Collaborative project management tool for teams",
+    image: "📋",
+    tech: ["Next.js", "PostgreSQL", "Redis", "WebSocket"],
+    color: "from-orange-400 to-red-600",
+    link: "#",
+    stats: { teams: "500+", uptime: "99.9%" },
+  },
+  {
+    id: 5,
+    title: "AI Chat Assistant",
+    category: "ai",
+    description: "Intelligent chatbot with natural language processing",
+    image: "🤖",
+    tech: ["Python", "OpenAI", "FastAPI", "React"],
+    color: "from-yellow-400 to-orange-500",
+    link: "#",
+    stats: { queries: "1M+", accuracy: "95%" },
+  },
+  {
+    id: 6,
+    title: "Weather Dashboard",
+    category: "web",
+    description: "Real-time weather data with beautiful visualizations",
+    image: "🌤️",
+    tech: ["Vue.js", "D3.js", "OpenWeather API"],
+    color: "from-teal-400 to-cyan-600",
+    link: "#",
+    stats: { cities: "1000+", updates: "Live" },
+  },
+];
+
+export const categories: Category[] = [
+  { id: "all", label: "All Projects", icon: "🎯" },
+  { id: "web", label: "Web Apps", icon: "🌐" },
+  { id: "mobile", label: "Mobile", icon: "📱" },
+  { id: "design", label: "Design", icon: "🎨" },
+  { id: "ai", label: "AI/ML", icon: "🤖" },
+];
