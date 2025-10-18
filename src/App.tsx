@@ -14,7 +14,6 @@ function App() {
         <Route path="/" element={<Hero />} />
         <Route path="/skills" element={<SkillsShowcase />} />
         <Route path="/projects" element={<ProjectsShowcase />} />
-        <Route path="/profile" element={<ProfileCard />} />
       </Routes>
     </Router>
   )
