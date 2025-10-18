@@ -16,7 +16,7 @@ export const Variant = () => {
   return (
     <div>
       <motion.nav
-        initial={false}
+        initial={"closed"}
         animate={isOpen ? "open" : "closed"}
         custom={height}
         ref={containerRef}
