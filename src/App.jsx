@@ -3,7 +3,6 @@ import './App.css'
 import { Hero } from './pages/Hero'
 import SkillsShowcase from './pages/skillShowcase'
 import ProjectsShowcase from './pages/ProjectsShowcase'
-import { ProfileCard } from './pages/ProfileCard'
 import { ResponsiveNav } from './components/ui/projectNav/ResponsiveNav'
 
 function App() {
