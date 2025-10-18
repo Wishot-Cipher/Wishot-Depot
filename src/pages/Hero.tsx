@@ -1,7 +1,6 @@
 "use client";
 
 import { HeroCelebration } from "@/components/ui/HeroCelebration";
-import { ResponsiveNav } from "@/components/ui/projectNav/ResponsiveNav";
 import { FloatingBackground } from "@/components/ui/FloatingShape";
 import { TypewriterSkill } from "@/components/ui/TypewriterSkills";
 import { motion } from "framer-motion";
@@ -25,7 +24,6 @@ export const Hero = () => {
     >
 
         <HeroCelebration />
-      <ResponsiveNav />
       <FloatingBackground />
 
       <div className="relative z-[10] max-w-full mx-auto px-6 py-12 overflow-hidden min-h-screen flex items-center">
