@@ -9,7 +9,7 @@ export const MenuToggle = ({
 }) => (
   <motion.div
     style={{ pointerEvents: "auto" }}
-    className="sticky top-4 left-4 z-30 flex items-center gap-3 px-3 py-2 rounded-xl border backdrop-blur-lg mx-1.5"
+    className="sticky top-2 left-4 z-30 flex items-center gap-3 px-2 py-1 rounded-xl border backdrop-blur-lg mx-1.5"
     animate={
       isOpen
         ? {
@@ -34,8 +34,8 @@ export const MenuToggle = ({
       style={{ border: "none" }}
     >
       <svg
-        width="38"
-        height="38"
+        width="35"
+        height="35"
         viewBox="0 0 34 34"
         stroke="white"
         strokeWidth={2.5}
@@ -43,14 +43,14 @@ export const MenuToggle = ({
       >
         <motion.path
           variants={{
-            closed: { d: "M 4 8 L 30 8" },
+            closed: { d: "M 4 8 L 29 8" },
             open: { d: "M 6 6 L 28 28" },
           }}
           strokeLinecap="round"
         />
         <motion.path
           variants={{
-            closed: { opacity: 1, d: "M 4 17 L 30 17" },
+            closed: { opacity: 1, d: "M 4 17 L 29 17" },
             open: { opacity: 0 },
           }}
           transition={{ duration: 0.2 }}
@@ -58,7 +58,7 @@ export const MenuToggle = ({
         />
         <motion.path
           variants={{
-            closed: { d: "M 4 26 L 30 26" },
+            closed: { d: "M 4 26 L 29 26" },
             open: { d: "M 6 28 L 28 6" },
           }}
           strokeLinecap="round"
@@ -67,7 +67,7 @@ export const MenuToggle = ({
     </motion.button>
 
     <motion.span
-      animate={isOpen ? { opacity: 0, x: -20 } : { opacity: 1, x: 0 }}
+      animate={isOpen ? { opacity: 0, x: -30 } : { opacity: 1, x: 0 }}
       transition={{ duration: 0.3 }}
       className="text-lg font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent tracking-wide"
     >

@@ -1,8 +1,8 @@
 export const nav: React.CSSProperties = {
-  width: "100%",
+  width: "99%",
   position: "fixed",
   top: 0,
-  paddingTop: 18,
+  paddingTop: 4,
   left: 0,
   zIndex: 50,
   pointerEvents: "none",
@@ -25,14 +25,14 @@ export const list: React.CSSProperties = {
   padding: 25,
   margin: 0,
   position: "absolute",
-  top: 140,
+  top: 120,
   width: "100%",
   maxWidth: "350px",
 };
 
 export const listItem: React.CSSProperties = {
   display: "flex",
-  maxWidth: "90%",
+  maxWidth: "88%",
   alignItems: "center",
   justifyContent: "flex-start",
   marginBottom: 25,

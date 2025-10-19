@@ -63,7 +63,7 @@ export const Variant = () => {
         {/* Brand Logo */}
         <motion.div
           variants={logoVariants}
-          className="absolute top-20 left-8 text-white mt-1.5"
+          className="absolute top-16 left-8 text-white mt-1.5"
           animate={isOpen ? { pointerEvents: "auto" } : { pointerEvents: "none" }}
         >
           <h2 className="text-2xl font-bold bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent tracking-wide">

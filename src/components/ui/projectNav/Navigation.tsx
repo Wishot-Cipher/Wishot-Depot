@@ -30,7 +30,7 @@ export const Navigation = ({ toggle, isOpen }: { toggle: () => void; isOpen: boo
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
-          className="w-full py-3 px-6 rounded-xl bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 text-white font-semibold shadow-lg"
+          className="w-full py-3 px-5 rounded-xl bg-gradient-to-r from-cyan-500 via-purple-500 to-pink-500 text-white font-semibold shadow-lg"
         >
           Get Started →
         </motion.button>

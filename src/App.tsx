@@ -4,6 +4,7 @@ import { Hero } from './pages/Hero'
 import SkillsShowcase from './pages/skillShowcase'
 import ProjectsShowcase from './pages/ProjectsShowcase'
 import { ResponsiveNav } from './components/ui/projectNav/ResponsiveNav'
+import AboutPage from './pages/About'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={<Hero />} />
         <Route path="/skills" element={<SkillsShowcase />} />
         <Route path="/projects" element={<ProjectsShowcase />} />
+        <Route path="/about" element={<AboutPage />} />
       </Routes>
     </Router>
   )
