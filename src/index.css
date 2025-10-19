@@ -62,6 +62,29 @@ button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
+@layer base {
+  html,
+  body {
+    overflow-x: hidden;
+    touch-action: manipulation;
+    background-color: #0A0A0A;
+    color: rgba(255, 255, 255, 0.87);
+    -webkit-text-size-adjust: 100%; /* Prevent iOS text auto-zooming */
+  }
+
+  /* Prevent zooming when focusing input fields on iOS */
+  input,
+  textarea,
+  select {
+    font-size: 16px;
+    outline: none;
+  }
+
+  /* Optional for smoother mobile scrolling */
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
 
 @media (prefers-color-scheme: light) {
   :root {
