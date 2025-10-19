@@ -1,11 +1,26 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
-// ✅ Correct Vite configuration
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
+
 export default defineConfig({
-  plugins: [react()],
-  base: "./", // ensures correct relative paths for assets in production (like Vercel)
-  css: {
-    lightningcss: false, // disable LightningCSS to fix Tailwind v4 warnings
+  plugins: [
+    react(),
+    tailwindcss(),
+  ],
+  
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
+  
+  server: {
+    port: 3000,
+    strictPort: false,
   },
 })

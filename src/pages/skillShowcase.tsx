@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { HeroCelebration } from "../components/ui/HeroCelebration";
-import { FloatingParticles } from "@/components/ui/skillShowcase/FloatingParticles";
+import { FloatingParticles } from "../components/ui/skillShowcase/FloatingParticles";
 
 export const SkillsShowcase = () => {
   const [activeCard, setActiveCard] = useState(null);

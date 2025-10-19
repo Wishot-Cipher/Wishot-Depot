@@ -1,20 +1,42 @@
-"use client";
-import { askGroq } from "@/utils/askGroq";
+/* About Page with AI Chat Assistant - Using Groq API with LocalStorage */
+import { askGroq } from "../utils/askGroq";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useRef, useEffect } from "react";
 import { HeroCelebration } from "../components/ui/HeroCelebration";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
+const STORAGE_KEY = "dev_wishot_chat_history";
+
 export const AboutPage = () => {
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      type: "bot",
-      text: "👋 Hi there! I'm Dev_Wishot's AI assistant. Ask me anything about my creator — skills, experience, projects, or passions!",
-      timestamp: new Date(),
-    },
-  ]);
+  // Load messages from localStorage or use default
+  const [messages, setMessages] = useState(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved);
+          // Convert timestamp strings back to Date objects
+          return parsed.map((msg: any) => ({
+            ...msg,
+            timestamp: new Date(msg.timestamp),
+          }));
+        } catch (error) {
+          console.error("Failed to parse saved messages:", error);
+        }
+      }
+    }
+    // Default welcome message
+    return [
+      {
+        id: 1,
+        type: "bot",
+        text: "👋 Hi there! I'm Dev_Wishot's AI assistant. Ask me anything about my creator — skills, experience, projects, or passions!",
+        timestamp: new Date(),
+      },
+    ];
+  });
+
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [isStreaming, setIsStreaming] = useState(false);
@@ -22,13 +44,36 @@ export const AboutPage = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const abortControllerRef = useRef<AbortController | null>(null);
 
-  // Typing speed control (lower = faster)
-  const TYPING_SPEED = 15; // Changed from 2ms to 15ms for faster typing
-  const PUNCTUATION_DELAY = 50; // Slight pause at punctuation
+  const scrollToBottom = () => {
+    // Only auto-scroll if user is near bottom (within 100px)
+    if (messagesEndRef.current) {
+      const container = messagesEndRef.current.parentElement;
+      if (container) {
+        const isNearBottom =
+          container.scrollHeight -
+            container.scrollTop -
+            container.clientHeight <
+          100;
+        if (isNearBottom) {
+          messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+      }
+    }
+  };
 
-  const scrollToBottom = () =>
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  useEffect(scrollToBottom, [messages]);
+  useEffect(() => {
+    // Only auto-scroll on new messages, not while streaming
+    if (!isStreaming) {
+      scrollToBottom();
+    }
+  }, [messages, isStreaming]);
+
+  // Save messages to localStorage whenever they change
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+    }
+  }, [messages]);
 
   const quickQuestions = [
     "💼 What are your main skills?",
@@ -53,13 +98,11 @@ export const AboutPage = () => {
     setInputValue("");
     setIsTyping(true);
 
-    // Create abort controller for this request
     abortControllerRef.current = new AbortController();
 
     try {
       const aiText = await askGroq(userMessage.text);
 
-      // Hide typing indicator, start streaming
       setIsTyping(false);
       setIsStreaming(true);
 
@@ -73,12 +116,10 @@ export const AboutPage = () => {
 
       setMessages((prev) => [...prev, botResponse]);
 
-      // SUPER FAST STREAMING - Display multiple characters at once
-      const CHUNK_SIZE = 6; // Display 6 characters at a time (adjust for speed)
-      const CHUNK_DELAY = 1.5; // 1.5ms between chunks (very smooth & fast)
+      const CHUNK_SIZE = 6;
+      const CHUNK_DELAY = 1.5;
 
       for (let i = 0; i < aiText.length; i += CHUNK_SIZE) {
-        // Check if streaming was cancelled
         if (abortControllerRef.current?.signal.aborted) {
           break;
         }
@@ -92,7 +133,6 @@ export const AboutPage = () => {
         await new Promise((res) => setTimeout(res, CHUNK_DELAY));
       }
 
-      // Ensure full text is displayed
       setMessages((prev) =>
         prev.map((msg) => (msg.id === botId ? { ...msg, text: aiText } : msg))
       );
@@ -120,7 +160,7 @@ export const AboutPage = () => {
   };
 
   const handleQuickQuestion = (q: string) => {
-    if (isStreaming) return; // Don't send if already streaming
+    if (isStreaming) return;
     const cleanQuestion = q.replace(/[^\w\s?]/g, "").trim();
     setInputValue(cleanQuestion);
     setTimeout(() => {
@@ -128,7 +168,6 @@ export const AboutPage = () => {
     }, 100);
   };
 
-  // Handle Enter key press
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -136,19 +175,23 @@ export const AboutPage = () => {
     }
   };
 
-  // Clear conversation
+  // Clear conversation and localStorage
   const handleClearChat = () => {
-    setMessages([
-      {
-        id: 1,
-        type: "bot",
-        text: "👋 Chat cleared! Ask me anything about Dev_Wishot!",
-        timestamp: new Date(),
-      },
-    ]);
+    const welcomeMessage = {
+      id: Date.now(),
+      type: "bot",
+      text: "👋 Chat cleared! All history has been deleted. Ask me anything about Dev_Wishot!",
+      timestamp: new Date(),
+    };
+
+    setMessages([welcomeMessage]);
+
+    // Clear localStorage
+    if (typeof window !== "undefined") {
+      localStorage.removeItem(STORAGE_KEY);
+    }
   };
 
-  // Stop streaming response
   const handleStopStreaming = () => {
     if (abortControllerRef.current) {
       abortControllerRef.current.abort();
@@ -157,7 +200,6 @@ export const AboutPage = () => {
     }
   };
 
-  // Focus input on mount
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
@@ -176,20 +218,22 @@ export const AboutPage = () => {
           transition={{ duration: 0.6 }}
           className="pt-20 pb-4 md:pb-3 px-4 text-center bg-gradient-to-b from-[#0A0A0A] via-[#0A0A0A]/95 to-transparent flex-shrink-0"
         >
-          <div className="flex items-center justify-center gap-4">
-            <h2 className="text-3xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 mb-1">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4">
+            <h2 className="text-3xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400">
               Ask Me Anything
             </h2>
 
-            {/* Clear Chat Button */}
+            {/* Clear Chat Button - Responsive */}
             {messages.length > 1 && (
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={handleClearChat}
-                className="px-3 py-1.5 text-xs bg-white/5 hover:bg-white/10 text-gray-400 rounded-full border border-white/20 transition-all"
+                className="px-3 sm:px-4 py-1.5 sm:py-2 text-xs sm:text-sm bg-white/5 hover:bg-red-500/10 text-gray-400 hover:text-red-400 rounded-full border border-white/20 hover:border-red-500/50 transition-all flex items-center gap-1.5"
               >
-                🗑️ Clear
+                <span>🗑️</span>
+                <span className="hidden sm:inline">Clear Chat</span>
+                <span className="sm:hidden">Clear</span>
               </motion.button>
             )}
           </div>
@@ -202,6 +246,14 @@ export const AboutPage = () => {
           <p className="text-gray-400 text-xs md:text-sm">
             Powered by Groq AI • Lightning fast responses ⚡
           </p>
+
+          {/* Storage indicator */}
+          {messages.length > 1 && (
+            <p className="text-gray-500 text-[10px] md:text-xs mt-1">
+              💾 {messages.length} message{messages.length !== 1 ? "s" : ""}{" "}
+              saved locally
+            </p>
+          )}
         </motion.div>
 
         {/* Chat Messages - Maximum Space on Desktop */}
@@ -236,10 +288,10 @@ export const AboutPage = () => {
           </div>
         </div>
 
-        {/* Gradient Overlay - Thinner on Desktop */}
+        {/* Gradient Overlay */}
         <div className="absolute bottom-0 left-0 right-0 h-20 md:h-24 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/95 to-transparent pointer-events-none" />
 
-        {/* Input Bar - More Compact on Desktop */}
+        {/* Input Bar */}
         <div className="relative bg-[#0A0A0A]/95 backdrop-blur-xl border-t border-white/10 p-2 md:p-4 flex-shrink-0">
           <div className="max-w-5xl mx-auto w-full">
             {/* Quick Questions */}
@@ -273,7 +325,6 @@ export const AboutPage = () => {
                   className="flex-1 bg-transparent border-none outline-none text-white text-sm md:text-base py-2.5 md:py-3 placeholder-gray-500 focus:ring-0 disabled:opacity-50"
                 />
 
-                {/* Character count (optional) */}
                 {inputValue.length > 0 && (
                   <span className="text-xs text-gray-500 mr-2">
                     {inputValue.length}
@@ -318,7 +369,7 @@ export const AboutPage = () => {
   );
 };
 
-/* 🧠 Enhanced Message Bubble - Same as before */
+/* 🧠 Message Bubble */
 function MessageBubble({ message }) {
   const isBot = message.type === "bot";
 
@@ -332,7 +383,7 @@ function MessageBubble({ message }) {
     >
       <div
         className={`flex gap-2 md:gap-3 max-w-[90%] md:max-w-[80%] ${
-          isBot ? "flex-row" : "flex-row-reverse"
+          isBot ? "flex-row" : "flex-row-reverse overflow-hidden"
         }`}
       >
         {/* Avatar */}
@@ -349,36 +400,46 @@ function MessageBubble({ message }) {
           {isBot ? "🤖" : "🧑‍💻"}
         </motion.div>
 
-        {/* Message */}
+        {/* Message bubble */}
         <div className="flex flex-col gap-1">
           <motion.div
             initial={{ scale: 0.95 }}
             animate={{ scale: 1 }}
             transition={{ type: "spring", stiffness: 300, delay: 0.1 }}
-            className={`p-3 md:p-4 rounded-xl md:rounded-2xl leading-relaxed shadow-xl ${
+            className={`p-3 md:p-4 rounded-xl md:rounded-2xl leading-relaxed shadow-xl break-words overflow-hidden ${
               isBot
                 ? "bg-white/10 backdrop-blur-lg border border-white/20 text-gray-100 rounded-tl-none"
                 : "bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-tr-none"
             }`}
           >
             {isBot ? (
-              <div
-                className="prose prose-invert prose-sm md:prose-base max-w-none 
-               leading-relaxed text-gray-100
-               prose-strong:text-white prose-a:text-cyan-400 hover:prose-a:underline
-               prose-code:bg-white/10 prose-code:px-1 prose-code:rounded-md prose-code:text-pink-300
-               prose-ul:list-disc prose-ul:ml-5 prose-li:my-1"
-              >
-                <div className="text-left">
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                    {message.text}
-                  </ReactMarkdown>
-                </div>
+              // ✅ Markdown output (ONLY table scrolls)
+              <div className="markdown-prose text-left leading-relaxed w-full">
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm]}
+                  components={{
+                    table: ({ node, ...props }) => (
+                      <div className="w-full overflow-x-auto touch-pan-x scrollbar-thin scrollbar-thumb-cyan-500/50 scrollbar-track-transparent">
+                        <table
+                          {...props}
+                          className="min-w-[600px] md:min-w-full"
+                        />
+                      </div>
+                    ),
+                  }}
+                >
+                  {message.text}
+                </ReactMarkdown>
               </div>
             ) : (
-              <div className="text-sm md:text-base">{message.text}</div>
+              // ✅ User messages never scroll
+              <div className="text-sm md:text-base text-left break-words w-full">
+                {message.text}
+              </div>
             )}
           </motion.div>
+
+          {/* Timestamp */}
           <span
             className={`text-[10px] md:text-xs text-gray-500 px-2 ${
               isBot ? "text-left" : "text-right"
