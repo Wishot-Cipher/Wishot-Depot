@@ -1,7 +1,7 @@
 /* About Page with AI Chat Assistant - Using Groq API with LocalStorage */
 import { askGroq } from "../utils/askGroq";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, forwardRef } from "react";
 import { HeroCelebration } from "../components/ui/HeroCelebration";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -370,91 +370,101 @@ export const AboutPage = () => {
 };
 
 /* 🧠 Message Bubble */
-function MessageBubble({ message }) {
-  const isBot = message.type === "bot";
+type ChatMessage = {
+  id: number;
+  type: "bot" | "user";
+  text: string;
+  timestamp: Date;
+};
 
-  return (
-    <motion.div
-      initial={{ opacity: 0, y: 20, scale: 0.95 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.95 }}
-      transition={{ duration: 0.3 }}
-      className={`flex ${isBot ? "justify-start" : "justify-end"}`}
-    >
-      <div
-        className={`flex gap-2 md:gap-3 max-w-[90%] md:max-w-[80%] ${
-          isBot ? "flex-row" : "flex-row-reverse overflow-hidden"
-        }`}
+const MessageBubble = forwardRef<HTMLDivElement, { message: ChatMessage }>(
+  ({ message }, ref) => {
+    const isBot = message.type === "bot";
+
+    return (
+      <motion.div
+        ref={ref as any}
+        initial={{ opacity: 0, y: 20, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.95 }}
+        transition={{ duration: 0.3 }}
+        className={`flex ${isBot ? "justify-start" : "justify-end"}`}
       >
-        {/* Avatar */}
-        <motion.div
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ type: "spring", stiffness: 500, delay: 0.1 }}
-          className={`w-8 h-8 md:w-10 md:h-10 flex-shrink-0 flex items-start justify-center text-lg md:text-xl rounded-full shadow-lg ${
-            isBot
-              ? "bg-gradient-to-br from-cyan-500 to-purple-600"
-              : "bg-gradient-to-br from-pink-500 to-orange-600"
+        <div
+          className={`flex gap-2 md:gap-3 max-w-[90%] md:max-w-[80%] ${
+            isBot ? "flex-row" : "flex-row-reverse overflow-hidden"
           }`}
         >
-          {isBot ? "🤖" : "🧑‍💻"}
-        </motion.div>
-
-        {/* Message bubble */}
-        <div className="flex flex-col gap-1">
+          {/* Avatar */}
           <motion.div
-            initial={{ scale: 0.95 }}
+            initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            transition={{ type: "spring", stiffness: 300, delay: 0.1 }}
-            className={`p-3 md:p-4 rounded-xl md:rounded-2xl leading-relaxed shadow-xl break-words overflow-hidden ${
+            transition={{ type: "spring", stiffness: 500, delay: 0.1 }}
+            className={`w-8 h-8 md:w-10 md:h-10 flex-shrink-0 flex items-start justify-center text-lg md:text-xl rounded-full shadow-lg ${
               isBot
-                ? "bg-white/10 backdrop-blur-lg border border-white/20 text-gray-100 rounded-tl-none"
-                : "bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-tr-none"
+                ? "bg-gradient-to-br from-cyan-500 to-purple-600"
+                : "bg-gradient-to-br from-pink-500 to-orange-600"
             }`}
           >
-            {isBot ? (
-              // ✅ Markdown output (ONLY table scrolls)
-              <div className="markdown-prose text-left leading-relaxed w-full">
-                <ReactMarkdown
-                  remarkPlugins={[remarkGfm]}
-                  components={{
-                    table: ({ node, ...props }) => (
-                      <div className="w-full overflow-x-auto touch-pan-x scrollbar-thin scrollbar-thumb-cyan-500/50 scrollbar-track-transparent">
-                        <table
-                          {...props}
-                          className="min-w-[600px] md:min-w-full"
-                        />
-                      </div>
-                    ),
-                  }}
-                >
-                  {message.text}
-                </ReactMarkdown>
-              </div>
-            ) : (
-              // ✅ User messages never scroll
-              <div className="text-sm md:text-base text-left break-words w-full">
-                {message.text}
-              </div>
-            )}
+            {isBot ? "🤖" : "🧑‍💻"}
           </motion.div>
 
-          {/* Timestamp */}
-          <span
-            className={`text-[10px] md:text-xs text-gray-500 px-2 ${
-              isBot ? "text-left" : "text-right"
-            }`}
-          >
-            {message.timestamp.toLocaleTimeString([], {
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
-          </span>
+          {/* Message bubble */}
+          <div className="flex flex-col gap-1">
+            <motion.div
+              initial={{ scale: 0.95 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", stiffness: 300, delay: 0.1 }}
+              className={`p-3 md:p-4 rounded-xl md:rounded-2xl leading-relaxed shadow-xl break-words overflow-hidden ${
+                isBot
+                  ? "bg-white/10 backdrop-blur-lg border border-white/20 text-gray-100 rounded-tl-none"
+                  : "bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-tr-none"
+              }`}
+            >
+              {isBot ? (
+                // ✅ Markdown output (ONLY table scrolls)
+                <div className="markdown-prose text-left leading-relaxed w-full">
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    components={{
+                      table: ({ node, ...props }) => (
+                        <div className="w-full overflow-x-auto touch-pan-x scrollbar-thin scrollbar-thumb-cyan-500/50 scrollbar-track-transparent">
+                          <table
+                            {...props}
+                            className="min-w-[600px] md:min-w-full"
+                          />
+                        </div>
+                      ),
+                    }}
+                  >
+                    {message.text}
+                  </ReactMarkdown>
+                </div>
+              ) : (
+                // ✅ User messages never scroll
+                <div className="text-sm md:text-base text-left break-words w-full">
+                  {message.text}
+                </div>
+              )}
+            </motion.div>
+
+            {/* Timestamp */}
+            <span
+              className={`text-[10px] md:text-xs text-gray-500 px-2 ${
+                isBot ? "text-left" : "text-right"
+              }`}
+            >
+              {message.timestamp.toLocaleTimeString([], {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </span>
+          </div>
         </div>
-      </div>
-    </motion.div>
-  );
-}
+      </motion.div>
+    );
+  }
+);
 
 /* ✨ Typing Bubble */
 function TypingBubble() {
