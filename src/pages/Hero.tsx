@@ -49,7 +49,7 @@ export const Hero = () => {
             </motion.div>
 
             {/* Headline */}
-            <div className="relative z-10 md:mt-8 mt-20 max-w-5xl">
+            <div className="relative z-10 md:mt-8 mt-10 max-w-5xl">
               <motion.div
                 initial={{ opacity: 0, x: -40 }}
                 animate={{ opacity: 1, x: 0 }}
