@@ -321,3 +321,67 @@ button:focus-visible {
     padding: 0.4rem 0.5rem;
   }
 }
+
+
+/* Custom Sonner Toast Styles */
+[data-sonner-toast] {
+  background: rgba(17, 24, 39, 0.95) !important;
+  backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(34, 211, 238, 0.3) !important;
+  color: #fff !important;
+  border-radius: 12px !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important;
+}
+
+[data-sonner-toast][data-type="success"] {
+  border-color: rgba(34, 197, 94, 0.5) !important;
+  background: linear-gradient(135deg, rgba(17, 24, 39, 0.95) 0%, rgba(34, 197, 94, 0.1) 100%) !important;
+}
+
+[data-sonner-toast][data-type="error"] {
+  border-color: rgba(239, 68, 68, 0.5) !important;
+  background: linear-gradient(135deg, rgba(17, 24, 39, 0.95) 0%, rgba(239, 68, 68, 0.1) 100%) !important;
+}
+
+[data-sonner-toast][data-type="loading"] {
+  border-color: rgba(168, 85, 247, 0.5) !important;
+  background: linear-gradient(135deg, rgba(17, 24, 39, 0.95) 0%, rgba(168, 85, 247, 0.1) 100%) !important;
+}
+
+/* Toast title and description */
+[data-title] {
+  color: #fff !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+}
+
+[data-description] {
+  color: rgba(255, 255, 255, 0.7) !important;
+  font-size: 13px !important;
+  margin-top: 4px !important;
+}
+
+/* Toast icons */
+[data-icon] {
+  color: rgba(34, 211, 238, 1) !important;
+}
+
+[data-sonner-toast][data-type="success"] [data-icon] {
+  color: rgba(34, 197, 94, 1) !important;
+}
+
+[data-sonner-toast][data-type="error"] [data-icon] {
+  color: rgba(239, 68, 68, 1) !important;
+}
+
+/* Toast close button */
+[data-close-button] {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: #fff !important;
+  border-radius: 6px !important;
+}
+
+[data-close-button]:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+}

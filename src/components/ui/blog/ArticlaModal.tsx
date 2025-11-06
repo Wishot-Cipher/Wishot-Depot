@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { askGroq } from "./../../../utils/askGroq";
+import { askGroq } from "../../../utils/askGroq";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { COMMENTS_KEY, REACTIONS_KEY } from "./blogData";

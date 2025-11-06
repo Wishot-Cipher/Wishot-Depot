@@ -7,11 +7,10 @@ export const SkillsShowcase = () => {
   const [activeCard, setActiveCard] = useState(null);
 
   return (
-    <div className="relative w-full min-h-screen overflow-hidden bg-[#0A0A0A] bg-gradient-to-br from-gray-900 to-blue-950 ">
-      {/* Changed: Removed 'flex items-center' from this div */}
-      <div className="relative z-[10] max-w-full mx-auto px-6 py-20 overflow-hidden min-h-screen ">
+    <div className="relative w-full min-h-screen overflow-hidden bg-gradient-to-br from-[#0A0A0A] via-gray-900 to-blue-950/50">
+      <div className="relative z-[10] max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 min-h-screen">
         {/* Animated mesh gradient background */}
-        <div className="absolute inset-0 opacity-30">
+        <div className="absolute inset-0 opacity-30 pointer-events-none">
           <motion.div
             animate={{
               background: [
@@ -24,21 +23,21 @@ export const SkillsShowcase = () => {
             transition={{ duration: 10, repeat: Infinity }}
             className="absolute inset-0"
           />
-          {/* Floating particles */}
           <FloatingParticles />
         </div>
+
         <HeroCelebration showText={false} />
 
         {/* Core content */}
-        <div className="relative w-full flex flex-col lg:flex-row gap-8 justify-center">
+        <div className="relative w-full">
           {/* Interactive 3D Skill Cards */}
-          <div className="relative w-full max-w-7xl mx-auto ">
+          <div className="relative w-full">
             {/* Section Header */}
             <motion.div
               initial={{ opacity: 0, y: -30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="text-center mb-16 mt-6 md:mt-0"
+              className="text-center mb-12 lg:mb-16"
             >
               <motion.div
                 initial={{ scale: 0 }}
@@ -46,8 +45,8 @@ export const SkillsShowcase = () => {
                 transition={{ duration: 0.6, type: "spring" }}
                 className="inline-block"
               >
-                <div className="relative ">
-                  <h2 className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400">
+                <div className="relative">
+                  <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 mb-4">
                     Skills Arsenal
                   </h2>
                   <motion.div
@@ -57,13 +56,13 @@ export const SkillsShowcase = () => {
                   />
                 </div>
               </motion.div>
-              <p className="text-gray-400 text-lg mt-4">
-                Hover to explore my expertise
+              <p className="text-gray-400 text-base sm:text-lg mt-6 max-w-2xl mx-auto">
+                Hover to explore my technical expertise
               </p>
             </motion.div>
 
             {/* Skill Cards Grid with 3D effect */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               <SkillCard3D
                 icon="⚛️"
                 title="React & Next.js"
@@ -95,10 +94,10 @@ export const SkillsShowcase = () => {
                 onHover={() => setActiveCard(2)}
               />
               <SkillCard3D
-                icon="🎭"
-                title="Animation"
-                description="Bringing interfaces to life"
-                skills={["Framer Motion", "GSAP", "Three.js", "Lottie"]}
+                icon="🤖"
+                title="AI Integration"
+                description="Implementing intelligent solutions"
+                skills={["OpenAI", "Groq", "LangChain", "Machine Learning"]}
                 color="from-orange-400 to-red-600"
                 delay={0.4}
                 isActive={activeCard === 3}
@@ -116,41 +115,15 @@ export const SkillsShowcase = () => {
               />
               <SkillCard3D
                 icon="🔧"
-                title="DevOps"
-                description="Automating deployment & infrastructure"
-                skills={["Docker", "CI/CD", "AWS", "Vercel"]}
+                title="Backend & DevOps"
+                description="Full-stack development & deployment"
+                skills={["Node.js", "Docker", "CI/CD", "AWS"]}
                 color="from-teal-400 to-cyan-600"
                 delay={0.6}
                 isActive={activeCard === 5}
                 onHover={() => setActiveCard(5)}
               />
             </div>
-
-            {/* Skill Level Visualization */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-              className="mt-20 mb-12"
-            >
-              <h3 className="text-3xl font-bold text-white mb-8 text-center">
-                Proficiency Levels
-              </h3>
-              <div className="space-y-4">
-                <SkillBar
-                  skill="Frontend Development"
-                  level={95}
-                  color="cyan"
-                />
-                <SkillBar skill="UI/UX Design" level={90} color="purple" />
-                <SkillBar
-                  skill="Backend Development"
-                  level={80}
-                  color="green"
-                />
-                <SkillBar skill="Mobile Development" level={85} color="pink" />
-              </div>
-            </motion.div>
           </div>
         </div>
       </div>
@@ -158,7 +131,7 @@ export const SkillsShowcase = () => {
   );
 };
 
-// 3D Interactive Skill Card
+// 3D Interactive Skill Card Component
 function SkillCard3D({
   icon,
   title,
@@ -180,29 +153,39 @@ function SkillCard3D({
       className="relative group cursor-pointer"
       style={{ perspective: "1000px" }}
     >
+      {/* Animated border glow - MOVED OUTSIDE */}
+      <motion.div
+        animate={isActive ? { opacity: 1 } : { opacity: 0 }}
+        className={`absolute -inset-[2px] rounded-3xl blur-xl bg-gradient-to-br ${color} z-0`}
+      />
+
       <motion.div
         animate={
           isActive ? { rotateY: 5, rotateX: 5 } : { rotateY: 0, rotateX: 0 }
         }
         transition={{ duration: 0.3 }}
-        className={`relative bg-gradient-to-br ${color} p-[2px] rounded-3xl overflow-hidden`}
+        className={`relative bg-gradient-to-br ${color} p-[2px] rounded-3xl overflow-hidden shadow-2xl z-10`}
       >
         {/* Inner content */}
-        <div className="bg-gray-900/90 backdrop-blur-xl rounded-3xl p-6 h-full">
-          {/* Icon with glow */}
+        <div className="relative bg-gray-900/90 backdrop-blur-xl rounded-3xl p-6 h-full min-h-[280px] flex flex-col">
+          {/* Icon with animation */}
           <motion.div
             whileHover={{ rotate: 360, scale: 1.2 }}
             transition={{ duration: 0.6 }}
-            className="text-6xl mb-4 inline-block"
+            className="text-5xl sm:text-6xl mb-4 inline-block"
           >
             {icon}
           </motion.div>
 
           {/* Title */}
-          <h3 className="text-2xl font-bold text-white mb-2">{title}</h3>
+          <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">
+            {title}
+          </h3>
 
           {/* Description */}
-          <p className="text-gray-400 text-sm mb-4">{description}</p>
+          <p className="text-gray-400 text-sm mb-4 flex-grow">
+            {description}
+          </p>
 
           {/* Skills tags */}
           <div className="flex flex-wrap gap-2">
@@ -212,71 +195,24 @@ function SkillCard3D({
                 initial={{ opacity: 0, scale: 0 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: delay + 0.1 * index }}
-                className="px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-xs text-white border border-white/20"
+                whileHover={{ scale: 1.1 }}
+                className="px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-xs text-white border border-white/20 hover:border-white/40 transition-all"
               >
                 {skill}
               </motion.span>
             ))}
           </div>
 
-          {/* Hover indicator */}
+          {/* Hover indicator at bottom - FIXED positioning */}
           <motion.div
             initial={{ width: 0 }}
-            whileHover={{ width: "100%" }}
+            animate={{ width: isActive ? "100%" : 0 }}
+            transition={{ duration: 0.3 }}
             className={`absolute bottom-0 left-0 h-1 bg-gradient-to-r ${color}`}
           />
         </div>
-
-        {/* Animated border glow */}
-        <motion.div
-          animate={isActive ? { opacity: 1 } : { opacity: 0 }}
-          className="absolute inset-0 rounded-3xl blur-xl opacity-0 transition-opacity"
-          style={{
-            background: `linear-gradient(45deg, var(--tw-gradient-from), var(--tw-gradient-to))`,
-          }}
-        />
       </motion.div>
     </motion.div>
-  );
-}
-
-// Animated Skill Bar
-function SkillBar({ skill, level, color }) {
-  const colors = {
-    cyan: "from-cyan-400 to-blue-500",
-    purple: "from-purple-400 to-pink-500",
-    green: "from-green-400 to-emerald-500",
-    pink: "from-pink-400 to-rose-500",
-  };
-
-  return (
-    <div className="space-y-2">
-      <div className="flex justify-between items-center">
-        <span className="text-white font-semibold">{skill}</span>
-        <motion.span
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-          className="text-gray-400"
-        >
-          {level}%
-        </motion.span>
-      </div>
-      <div className="h-3 bg-gray-800 rounded-full overflow-hidden">
-        <motion.div
-          initial={{ width: 0 }}
-          animate={{ width: `${level}%` }}
-          transition={{ duration: 1.5, ease: "easeOut" }}
-          className={`h-full bg-gradient-to-r ${colors[color]} rounded-full relative`}
-        >
-          <motion.div
-            animate={{ x: [-20, 20, -20] }}
-            transition={{ duration: 2, repeat: Infinity }}
-            className="absolute inset-0 bg-white/20 blur-xl"
-          />
-        </motion.div>
-      </div>
-    </div>
   );
 }
 
