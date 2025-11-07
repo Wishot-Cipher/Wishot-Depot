@@ -135,6 +135,11 @@ export default function ContactSection() {
           <h1 className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 mb-4">
             Get In Touch
           </h1>
+           <motion.div
+                  animate={{ scaleX: [0, 1, 0] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                  className="h-1 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 rounded-full mx-auto max-w-md mb-4"
+                />
           <p className="text-gray-400 text-lg max-w-2xl mx-auto">
             Have a project in mind? Let's work together to bring your ideas to life.
           </p>

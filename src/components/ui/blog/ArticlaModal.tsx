@@ -299,7 +299,7 @@ export default function ArticleModal({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       onClick={onClose}
-      className="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-start justify-center p-4"
     >
       <motion.div
         initial={{ scale: 0.9, y: 50 }}
@@ -547,7 +547,7 @@ export default function ArticleModal({
                   components={{
                     // Only override table wrapper for scroll functionality
                     table: ({ node, ...props }) => (
-                      <div className="table-scroll">
+                      <div className="table-scroll align-baseline justify-baseline">
                         <table {...props} />
                       </div>
                     ),
@@ -640,8 +640,8 @@ export default function ArticleModal({
                   animate={{ opacity: 1, y: 0 }}
                   className="p-3 sm:p-4 bg-white/5 rounded-xl"
                 >
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center text-xs sm:text-sm">
+                  <div className="flex items-start gap-2 mb-2">
+                    <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-cyan-500 to-purple-600 flex items-start justify-center text-xs sm:text-sm">
                       👤
                     </div>
                     <span className="text-sm sm:text-base text-white font-semibold">

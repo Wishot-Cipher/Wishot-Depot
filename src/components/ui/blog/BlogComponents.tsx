@@ -72,7 +72,7 @@ export function BlogFilters({
         </div>
 
         {/* View Mode Toggle (Grid/List) */}
-        <div className="flex gap-2 bg-white/5 border border-white/20 rounded-2xl p-2">
+        <div className=" gap-2 bg-white/5 border border-white/20 rounded-2xl p-2 hidden md:flex">
           <motion.button
             whileHover={{ scale: 1.05 }}
             onClick={() => setViewMode("grid")}

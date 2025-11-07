@@ -113,10 +113,12 @@ button:focus-visible {
   max-width: none;
   line-height: 1.75;
   color: #e5e7eb;
+  text-align: left;
 }
 
 .markdown-prose p {
   margin: 0.5rem 0;
+  text-align: left;
 }
 
 .markdown-prose strong {
